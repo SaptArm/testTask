@@ -1,0 +1,45 @@
+---
+# tasks file for nginx
+- name: Install nginx
+  apt:  
+    name: nginx
+    update_cache: yes
+    state: latest
+  tags:
+    - packages
+    
+- name: Copy nginx configuration file
+  copy:
+    src: files/nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx
+
+- name: Copy index.html file
+  copy:
+    src: files/index.html
+    dest: /opt/nginx/admin/{{ http_host }}/html
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure Nginx service is running
+  systemd:
+    name: nginx
+    state: started
+
+- name: Enable Nginx service at boot
+  systemd:
+    name: nginx
+    enabled: yes
+
+- name: Ensure Nginx configuration is valid
+  command: nginx -t
+  register: nginx_config_test
+  failed_when: nginx_config_test.rc != 0
+
+- name: Reload Nginx configuration if it's valid
+  command: nginx -s reload
+  when: nginx_config_test.rc == 0

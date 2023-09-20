@@ -1,0 +1,17 @@
+---
+# tasks file for php
+- name: Install php
+  apt:
+    name: php-fpm
+    update_cache: yes
+    state: latest
+  tags:
+    - packages
+
+- name: Copy php.ini file
+  copy:
+    src: files/php.ini
+    dest: /opt/nginx/admin/html/info.php
+    owner: root
+    group: root
+    mode: 0644
