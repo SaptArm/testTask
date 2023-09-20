@@ -58,7 +58,7 @@
 - name: Copy .env file
   template: 
     src: ../templates/data.env.j2
-    dest: /home/admin/.env
+    dest: /home/admin/docker-compose.yml
 
 - name: Run docker-compose
   command: docker-compose -f /home/admin/docker-compose.yml up -d
