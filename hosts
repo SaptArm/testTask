@@ -1,2 +1,2 @@
 [webserver]
-ubuntu1 ansible_host=158.160.70.73 ansible_user=admin 
+ubuntu1 ansible_host=158.160.66.154 ansible_user=admin 

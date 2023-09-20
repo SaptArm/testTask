@@ -48,17 +48,38 @@
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
   tags:
-    - install
+    - installcompose
+
+
+- name: Create directory
+  file:
+    path: "{{ workdir}}/nginx"
+    state: directory
+
+- name: Create directory php
+  file:
+    path: "{{ workdir}}/php"
+    state: directory
+
+- name: Copy nginx configuration file
+  copy:
+    src: ../templates/nginx.conf.j2
+    dest: "{{ workdir }}/nginx/nginx.conf"
+
+- name: Copy php configuration file
+  copy:
+    src: ../templates/php.ini.j2
+    dest: "{{ workdir }}/php/php.ini"
 
 - name: Copy docker-compose.yml file
   template:
     src: ../templates/docker-compose.yml.j2
-    dest: /home/admin/docker-compose.yml
+    dest: "{{ workdir }}/docker-compose.yml"
 
 - name: Copy .env file
   template: 
     src: ../templates/data.env.j2
-    dest: /home/admin/.env
+    dest: "{{ workdir }}/data.env"
 
 - name: Run docker-compose
-  command: docker-compose -f /home/admin/docker-compose.yml up -d
+  command: docker-compose --env-file data.env -f {{ workdir }}/docker-compose.yml up -d

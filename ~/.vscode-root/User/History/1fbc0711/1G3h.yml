@@ -1,8 +1,0 @@
-- name: Deploy Web Application
-  hosts: webserver
-  gather_facts: false
-  become: true
-
-  roles:
-    - nginx
-    - php

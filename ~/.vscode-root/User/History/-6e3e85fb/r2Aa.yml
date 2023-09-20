@@ -1,9 +1,0 @@
----
-# tasks file for php
-- name: Copy php.ini file
-  copy:
-    src: files/php.ini
-    dest: /opt/nginx/admin/html/info.php
-    owner: root
-    group: root
-    mode: 0644
